@@ -101,5 +101,5 @@ func (j *Joiner) Join() error {
 	lErr = j.left.Finish()
 	rErr = j.right.Finish()
 
-	return nil
+	return errors.Join(lErr, rErr)
 }

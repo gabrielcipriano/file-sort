@@ -7,6 +7,11 @@ import (
 	"github.com/gabrielcipriano/file-sort/interfaces"
 )
 
+var (
+	ErrInvalidReader = errors.New("Invalid Reader")
+	ErrInvalidSize   = errors.New("Size not valid")
+)
+
 type FileStream struct {
 	chunck   *CircularChunck
 	r        interfaces.Reader
@@ -18,10 +23,10 @@ func NewFileStream(
 	fnFinish func() error,
 ) (*FileStream, error) {
 	if reader == nil {
-		return nil, errors.New("Invalid Reader")
+		return nil, ErrInvalidReader
 	}
 	if size <= 0 {
-		return nil, errors.New("Size not valid")
+		return nil, ErrInvalidSize
 	}
 	return &FileStream{
 		chunck:   NewCircularChunck(size),
@@ -51,7 +56,6 @@ func (fs FileStream) Get() (interface{}, error) {
 	return elem, nil
 }
 
-// TODO: implement
 func (fs FileStream) Finish() error {
 	return fs.onFinish()
 }

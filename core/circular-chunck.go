@@ -26,14 +26,13 @@ func (cc *CircularChunck) Push(elem interface{}) bool {
 	return true
 }
 
-func (cc *CircularChunck) Pop() (top interface{}, ok bool) {
-	top, ok = cc.top()
-	if !ok {
-		return
+func (cc *CircularChunck) Pop() (interface{}, bool) {
+	top, ok := cc.top()
+	if ok {
+		cc.start = (cc.start + 1) % cc.capacity
+		cc.size--
 	}
-	cc.start = (cc.start + 1) % cc.capacity
-	cc.size--
-	return
+	return top, ok
 }
 
 func (cc *CircularChunck) top() (interface{}, bool) {
